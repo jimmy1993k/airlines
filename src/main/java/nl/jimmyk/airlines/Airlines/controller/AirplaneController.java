@@ -24,7 +24,7 @@ public class AirplaneController {
     }
 
     @RequestMapping(value="/delete/{id}", method=RequestMethod.DELETE)
-    public void deleteBooking(@PathVariable long id) {
+    public void deleteAirplane(@PathVariable long id) {
         this.airplaneRepository.delete(id);
     }
 }
