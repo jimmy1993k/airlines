@@ -51,6 +51,12 @@ public class Flight {
     @Column
     private LocalDateTime updatedAt;
 
+    @OneToOne
+    private Flight previousFlight;
+
+    @OneToOne
+    private Flight nextFlight;
+
     public Flight() {
         this.createdAt = LocalDateTime.now();
         this.status = EFlightStatus.SCHEDULED;

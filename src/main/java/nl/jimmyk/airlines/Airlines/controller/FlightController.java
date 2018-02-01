@@ -1,14 +1,10 @@
 package nl.jimmyk.airlines.Airlines.controller;
 
-import nl.jimmyk.airlines.Airlines.model.Airplane;
-import nl.jimmyk.airlines.Airlines.model.Airport;
-import nl.jimmyk.airlines.Airlines.model.Flight;
-import nl.jimmyk.airlines.Airlines.model.FlightInstructions;
+import nl.jimmyk.airlines.Airlines.model.*;
 import nl.jimmyk.airlines.Airlines.repository.AirplaneRepository;
 import nl.jimmyk.airlines.Airlines.repository.AirportRepository;
 import nl.jimmyk.airlines.Airlines.repository.FlightRepository;
-import nl.jimmyk.airlines.Airlines.utilities.DistanceCalculator;
-import nl.jimmyk.airlines.Airlines.utilities.SpeedConverter;
+import nl.jimmyk.airlines.Airlines.utilities.FlightCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,45 +20,70 @@ public class FlightController {
     @Autowired
     private AirplaneRepository airplaneRepository;
 
-    @RequestMapping(value="/schedule", method=RequestMethod.POST)
-    public void scheduleFlight(@RequestBody FlightInstructions flightInstructions) {
+    @RequestMapping(value="/prepare", method=RequestMethod.POST)
+    public Flight prepareFlight(@RequestBody FlightInstructions flightInstructions) {
         Airplane airplane = airplaneRepository.findOne(flightInstructions.getAirplaneId());
         Airport toAirport = airportRepository.findOne(flightInstructions.getToAirportId());
         Airport fromAirport = airportRepository.findOne(flightInstructions.getFromAirportId());
-        double distance = DistanceCalculator.distance(fromAirport, toAirport);
-        long flightTime = Math.round(SpeedConverter.fromKnotsToKilometerPerHour(airplane.getSpeed()) / distance * 60 * 60);
-        LocalDateTime scheduledTakeOffTime = LocalDateTime.now();
-        LocalDateTime scheduledLandingTime = scheduledTakeOffTime.plusSeconds(flightTime);
 
+        LocalDateTime scheduledTakeOffTime = LocalDateTime.now();
         Flight flight = new Flight();
         flight.setAirplane(airplane);
         flight.setFromAirport(fromAirport);
         flight.setToAirport(toAirport);
+
+        double distance = FlightCalculator.getDistance(flight);
         flight.setDistance(distance);
         flight.setScheduledTakeOffTime(scheduledTakeOffTime);
-        flight.setScheduledLandingTime(scheduledLandingTime);
+        flight.setScheduledLandingTime(FlightCalculator.getLandingTime(flight, scheduledTakeOffTime));
+        flight.setFuelNeeded(airplane.getFuelUsage() * distance);
         flightRepository.save(flight);
 
-        airplane.setAirport(toAirport);
+        return flight;
+    }
+
+    @RequestMapping(value="/fly/{flightId}", method=RequestMethod.POST)
+    public Flight flyFlight(@PathVariable long flightId) {
+        Flight flight = flightRepository.findOne(flightId);
+        Airplane airplane = flight.getAirplane();
+
+        LocalDateTime takeOffTime = LocalDateTime.now();
+        flight.setTakeOffTime(takeOffTime);
+
+        airplane.setFuel(airplane.getFuel() - flight.getFuelNeeded());
+        flight.setStatus(EFlightStatus.FINISHED);
+
+        flight.setLandingTime(FlightCalculator.getLandingTime(flight, takeOffTime));
+        airplane.setAirport(flight.getToAirport());
+
         airplaneRepository.save(airplane);
+        flightRepository.save(flight);
+
+        return flight;
     }
 
     /**
+     * Checks if all conditions are met for a flight
      *
      * @param airplane
-     * @param airport
+     * @param fromAirport
+     * @param toAirport
+     * @param distance
+     * @param flightTime
      * @return
      */
-    private boolean checkFlightRequirements(Airplane airplane, Airport airport) {
-        if (airplane == null || airport == null) {
+    private boolean checkFlightConditions(Airplane airplane, Airport fromAirport, Airport toAirport, double distance, long flightTime) {
+        if (airplane == null || fromAirport == null || toAirport == null) {
             //TODO throw not found exception
             return false;
         }
+
         if (airplane.getAirport() == null) {
             //TODO throw some exception
             return false;
         }
-        if (airplane.getAirport().getId() == airport.getId()) {
+
+        if (airplane.getAirport().getId() == fromAirport.getId()) {
             //TODO throw some exception
             return false;
         }

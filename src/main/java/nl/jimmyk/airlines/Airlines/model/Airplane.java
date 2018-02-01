@@ -11,12 +11,6 @@ public class Airplane {
     private long id;
 
     /**
-     * Fuel in kg
-     */
-    @Column
-    private double fuel;
-
-    /**
      * The airport the airplane is currently in
      */
     @JsonIgnore
@@ -30,7 +24,17 @@ public class Airplane {
     @Column
     private int speed;
 
-    public Airplane() {}
+    /**
+     * Fuel in kg
+     */
+    @Column
+    private double fuel;
+
+    /**
+     * Amount of fuel (in liters) per kilometer
+     */
+    @Column
+    private double fuelUsage;
 
     public long getId() {
         return id;
@@ -62,5 +66,13 @@ public class Airplane {
 
     public void setSpeed(int speed) {
         this.speed = speed;
+    }
+
+    public double getFuelUsage() {
+        return fuelUsage;
+    }
+
+    public void setFuelUsage(double fuelUsage) {
+        this.fuelUsage = fuelUsage;
     }
 }
