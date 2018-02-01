@@ -21,8 +21,10 @@ public class Airport {
 
     private long fuel;
 
-    @OneToMany(mappedBy="airport")
+    @OneToMany(mappedBy="airport", fetch=FetchType.EAGER)
     private List<Airplane> airplanes;
+
+    public Airport() {}
 
     public long getId() {
         return id;
@@ -54,5 +56,37 @@ public class Airport {
 
     public void setFuel(long fuel) {
         this.fuel = fuel;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public List<Airplane> getAirplanes() {
+        return airplanes;
+    }
+
+    public void setAirplanes(List<Airplane> airplanes) {
+        this.airplanes = airplanes;
     }
 }

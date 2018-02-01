@@ -1,5 +1,7 @@
 package nl.jimmyk.airlines.Airlines.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -10,9 +12,12 @@ public class Airplane {
 
     private double fuel;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="airport_id")
     private Airport airport;
+
+    public Airplane() {}
 
     public long getId() {
         return id;
