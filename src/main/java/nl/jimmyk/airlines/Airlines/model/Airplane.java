@@ -10,12 +10,25 @@ public class Airplane {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    /**
+     * Fuel in kg
+     */
+    @Column
     private double fuel;
 
+    /**
+     * The airport the airplane is currently in
+     */
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name="airport_id")
     private Airport airport;
+
+    /**
+     * Speed in knots
+     */
+    @Column
+    private int speed;
 
     public Airplane() {}
 
@@ -41,5 +54,13 @@ public class Airplane {
 
     public void setAirport(Airport airport) {
         this.airport = airport;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 }

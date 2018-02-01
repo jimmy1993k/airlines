@@ -10,6 +10,8 @@ import java.lang.*;
  * Calculates the distance between 2 geographical points
  *
  * GeoDataSource.com (C) All Rights Reserved 2017
+ * https://www.geodatasource.com/developers/java
+ *
  * Refactored a little bit
  */
 public class DistanceCalculator {
@@ -18,11 +20,10 @@ public class DistanceCalculator {
      *
      * @param airportA an aiport
      * @param airportB an airport
-     * @param units The unit to return the distance in (Kilometers, Miles or Nautical Miles
      * @return double
      */
-    public static double distance(Airport airportA, Airport airportB, EUnits units) {
-        return distance(airportA.getLatitude(), airportA.getLongitude(), airportB.getLatitude(), airportB.getLongitude(), units);
+    public static double distance(Airport airportA, Airport airportB) {
+        return distance(airportA.getLatitude(), airportA.getLongitude(), airportB.getLatitude(), airportB.getLongitude());
     }
 
     /**
@@ -32,21 +33,17 @@ public class DistanceCalculator {
      * @param lon1 Longitude point 2
      * @param lat2 Latitude point 2
      * @param lon2 Longitude point 2
-     * @param units The unit to return the distance in (Kilometers, Miles or Nautical Miles
      * @return double
      */
-    public static double distance(double lat1, double lon1, double lat2, double lon2, EUnits units) {
+    public static double distance(double lat1, double lon1, double lat2, double lon2) {
         double theta = lon1 - lon2;
         double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
         dist = Math.acos(dist);
         dist = rad2deg(dist);
         dist = dist * 60 * 1.1515;
-        switch(units) {
-            case KILOMETERS: dist = dist * 1.609344; break;
-            case NAUTICAL_MILES: dist = dist * 0.8684; break;
-            case MILES: break;
-        }
-        return (dist);
+        // unit conversion from mile to kilometer
+        dist = dist * 1.609344;
+        return dist;
     }
 
     /**

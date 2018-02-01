@@ -3,14 +3,12 @@ package nl.jimmyk.airlines.Airlines.controller;
 import nl.jimmyk.airlines.Airlines.model.Airport;
 import nl.jimmyk.airlines.Airlines.repository.AirportRepository;
 import nl.jimmyk.airlines.Airlines.utilities.DistanceCalculator;
-import nl.jimmyk.airlines.Airlines.utilities.EUnits;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/airports")
 public class AirportController {
-
     @Autowired
     private AirportRepository airportRepository;
 
@@ -31,9 +29,13 @@ public class AirportController {
     }
 
     @RequestMapping(value="/{airportIdA}/distance/{airportIdB}", method=RequestMethod.GET)
-    public double getDistance(@PathVariable long airportIdA, @PathVariable long airportIdB) {
+    public Double getDistance(@PathVariable long airportIdA, @PathVariable long airportIdB) {
         Airport airportA = this.airportRepository.findOne(airportIdA);
         Airport airportB = this.airportRepository.findOne(airportIdB);
-        return DistanceCalculator.distance(airportA, airportB, EUnits.KILOMETERS);
+        if (airportA == null || airportB == null) {
+            return null;
+        }
+
+        return DistanceCalculator.distance(airportA, airportB);
     }
 }
