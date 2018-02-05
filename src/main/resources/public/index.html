@@ -8,9 +8,16 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
+    <!-- Toastr -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+
+    <!-- AnimateCSS -->
     <link rel="stylesheet" href="/css/animate.css">
+
+    <!-- Main -->
     <link rel="stylesheet" href="/css/main.css">
 
     <title>Airlines & Co</title>
@@ -62,7 +69,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="row" id="flightsAirports">
+                <div class="row" id="flights">
                 </div>
             </div>
         </div>
@@ -82,6 +89,9 @@
 <!-- Font Awesome Markers -->
 <script src="/js/libraries/fontawesome-markers.min.js"></script>
 
+<!-- Toastr -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
 <!-- Helpers -->
 <script src="/js/helpers/ajax.js"></script>
 <script src="/js/helpers/distanceCalculator.js"></script>
@@ -89,6 +99,7 @@
 <!-- Main -->
 <script src="/js/airportController.js"></script>
 <script src="/js/airplaneController.js"></script>
+<script src="/js/flightController.js"></script>
 <script src="/js/airlines.js"></script>
 
 <!-- Test key for the Google Maps API -->

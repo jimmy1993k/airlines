@@ -1,6 +1,7 @@
-function AirportController(airport) {
+function AirportController(map, airport) {
     var self = this;
 
+    self.map = map;
     self.airport = airport;
     self.modal = $('#airportModal');
 
@@ -16,9 +17,9 @@ _.extend(AirportController.prototype, {
 
         _.each(self.airport.airplanes, function (airplane) {
             var card = AirportController.generateAirplaneCard(airplane);
-            var button = $('<button type="button" class="btn btn-primary">Select</a>');
+            var button = $('<button type="button" class="btn btn-primary float-right">Select</a>');
             button.on('click', function () {
-                new AirplaneController(self.airport, airplane);
+                new AirplaneController(self.map, self.airport, airplane);
                 self.modal.modal('hide');
             });
             card.find('p.card-text').append(button);
@@ -32,7 +33,7 @@ _.extend(AirportController.prototype, {
 
 // Static method
 AirportController.generateAirplaneCard = function(airplane) {
-    var cardContainer = $('<div class="card animated fadeIn"></div>');
+    var cardContainer = $('<div class="card border-primary animated fadeIn mb-2"></div>');
     var cardBody = $('<div class="card-body"></div>');
     var cardTitle = $('<h5 class="card-title">' + airplane.name + '</h5>');
     var cardText = $('<p class="card-text"></p>');
@@ -43,8 +44,7 @@ AirportController.generateAirplaneCard = function(airplane) {
         "Fuel usage": airplane.fuelUsage + " L/km"
     };
     _.each(specifics, function(value, key) {
-        var element = $('<li> ' + key + ': ' + value + ' </li>');
-        airplaneSpecifics.append(element);
+        airplaneSpecifics.append($('<li> ' + key + ': ' + value + ' </li>'));
     });
     cardContainer.append(cardBody.append(cardTitle).append(cardText.append(airplaneSpecifics)));
 

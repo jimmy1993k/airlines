@@ -17,7 +17,6 @@ public class Flight {
     @Column
     private double distance;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="airplane_id")
     private Airplane airplane;

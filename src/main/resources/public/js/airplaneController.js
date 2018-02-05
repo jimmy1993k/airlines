@@ -1,6 +1,7 @@
-function AirplaneController(airport, airplane) {
+function AirplaneController(map, airport, airplane) {
     var self = this;
 
+    self.map = map;
     self.airport = airport;
     self.airplane = airplane;
     self.modal = $('#airplaneModal');
@@ -11,7 +12,7 @@ function AirplaneController(airport, airplane) {
 _.extend(AirplaneController.prototype, {
     showModal: function () {
         var self = this;
-        self.modal.find('#airplaneTitle').html(self.formatTitle() + ' <i class="fa fa-plane"></i>');
+        self.modal.find('#airplaneTitle').html('Flying ' + self.formatTitle() + ' <i class="fa fa-plane"></i>' + ' to');
 
         self.modal.find('#airplaneAirports').html("");
         self.modal.modal('show');
@@ -24,9 +25,9 @@ _.extend(AirplaneController.prototype, {
 
                 var valid = self.valid(airport);
                 var card = AirplaneController.generateAirportCard(self.airport, airport, valid);
-                var button = $('<button type="button" class="btn btn-primary">Select</a>');
+                var button = $('<button type="button" class="btn btn-primary float-right">Select</a>');
                 button.on('click', function () {
-                    new AirplaneController(self.airport, airplane);
+                    new FlightController(self.map, self.airport, airport, self.airplane);
                     self.modal.modal('hide');
                 });
                 if (!valid) {
@@ -48,9 +49,8 @@ _.extend(AirplaneController.prototype, {
     }
 });
 
-
 // Static method
-AirplaneController.generateAirportCard = function(fromAirport, airport, valid) {
+AirplaneController.generateAirportCard = function(fromAirport, toAirport, valid) {
     valid = valid || false;
 
     var cardContainer = $('<div class="card animated fadeIn mb-2"></div>');
@@ -59,16 +59,16 @@ AirplaneController.generateAirportCard = function(fromAirport, airport, valid) {
     }
 
     var cardBody = $('<div class="card-body"></div>');
-    var cardTitle = $('<h5 class="card-title">' + airport.name + '</h5>');
+    var cardTitle = $('<h5 class="card-title">' + toAirport.name + '</h5>');
     var cardText = $('<p class="card-text"></p>');
     var airportSpecifics = $('<ul class="list-unstyled"></ul>');
     var specifics = {
-        "Planes": airport.airplanes.length,
+        "Planes": toAirport.airplanes.length,
         "Distance": DistanceCalculator.getDistanceFromLatLonInKm(
             fromAirport.latitude,
             fromAirport.longitude,
-            airport.latitude,
-            airport.longitude
+            toAirport.latitude,
+            toAirport.longitude
         ).toFixed(2) + " km"
     };
     _.each(specifics, function(value, key) {
@@ -78,4 +78,3 @@ AirplaneController.generateAirportCard = function(fromAirport, airport, valid) {
     cardContainer.append(cardBody.append(cardTitle).append(cardText.append(airportSpecifics)));
     return $('<div class="col-4"></div>').append(cardContainer);
 };
-

@@ -59,6 +59,6 @@ function addMarker(map, airport) {
         title: airport.name
     });
     marker.addListener('click', function(marker) {
-        new AirportController(airport);
+        new AirportController(map, airport);
     });
 }
