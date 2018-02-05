@@ -36,6 +36,9 @@ public class Airplane {
     @Column
     private double fuelUsage;
 
+    @Column
+    private String name;
+
     public long getId() {
         return id;
     }
@@ -74,5 +77,13 @@ public class Airplane {
 
     public void setFuelUsage(double fuelUsage) {
         this.fuelUsage = fuelUsage;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

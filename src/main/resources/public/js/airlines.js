@@ -1,4 +1,3 @@
-var airports;
 var map;
 
 function initMap() {
@@ -14,7 +13,7 @@ function initMap() {
     });
 
     ajaxJsonCall('GET', '/api/airports/list', null, function (result) {
-        airports = result;
+        var airports = result;
         var latitudes = _.pluck(airports, 'latitude');
         var longitudes = _.pluck(airports, 'longitude');
         var latMax = _.max(latitudes);
@@ -60,6 +59,6 @@ function addMarker(map, airport) {
         title: airport.name
     });
     marker.addListener('click', function(marker) {
-        console.log(JSON.stringify(marker, null, 4));
+        new AirportController(airport);
     });
 }
