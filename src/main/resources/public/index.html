@@ -20,7 +20,7 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="airportModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="airportModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -36,7 +36,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="airplaneModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="airplaneModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -46,7 +46,23 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="row" id="airplanesAirports">
+                <div class="row" id="airplaneAirports">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="flightModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="flightTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row" id="flightsAirports">
                 </div>
             </div>
         </div>
@@ -68,6 +84,7 @@
 
 <!-- Helpers -->
 <script src="/js/helpers/ajax.js"></script>
+<script src="/js/helpers/distanceCalculator.js"></script>
 
 <!-- Main -->
 <script src="/js/airportController.js"></script>
