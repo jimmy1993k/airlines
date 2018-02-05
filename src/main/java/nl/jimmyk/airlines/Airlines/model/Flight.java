@@ -1,6 +1,8 @@
 package nl.jimmyk.airlines.Airlines.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -33,15 +35,23 @@ public class Flight {
     private EFlightStatus status;
 
     @Column
+    @JsonFormat(pattern="yyyy-MM-dd hh:mm")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
     private LocalDateTime scheduledTakeOffTime;
 
     @Column
+    @JsonFormat(pattern="yyyy-MM-dd hh:mm")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
     private LocalDateTime scheduledLandingTime;
 
     @Column
+    @JsonFormat(pattern="yyyy-MM-dd hh:mm")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
     private LocalDateTime takeOffTime;
 
     @Column
+    @JsonFormat(pattern="yyyy-MM-dd hh:mm")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
     private LocalDateTime landingTime;
 
     @Column

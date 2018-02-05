@@ -13,7 +13,7 @@ function FlightController(map, fromAirport, toAirport, airplane) {
 _.extend(FlightController.prototype, {
     showModal: function () {
         var self = this;
-        self.modal.find('#flightTitle').html(self.formatTitle());
+        self.modal.find('#flightTitle').html(FlightController.generateTitle(self.fromAirport, self.toAirport));
         self.modal.find('#flights').html("");
         self.modal.modal('show');
         var payload = {
@@ -44,19 +44,18 @@ _.extend(FlightController.prototype, {
                     });
 
                     flightPath.setMap(self.map);
+                    new Airplane(map, flightPath, flight);
                 });
             });
             card.find('.card-body:first').append(button);
             self.modal.find('#flights').append(card);
         });
     },
-    formatTitle: function () {
-        return this.fromAirport.name + ' <i class="fa fa-plane"></i> ' + this.toAirport.name;
-    }
+
 });
 
 // Static method
-FlightController.generateFullFlightCard = function(flight) {
+FlightController.generateFullFlightCard = function (flight) {
     var cardContainer = $('<div class="card border-primary animated fadeIn mb-2"></div>');
     var cardTitle = $('<h5 class="card-title">' +
         flight.fromAirport.name +
@@ -75,7 +74,7 @@ FlightController.generateFullFlightCard = function(flight) {
     cardContainer.append(cardBody);
     return $('<div class="col"></div>').append(cardContainer);
 };
-FlightController.generateFlightCard = function(flight) {
+FlightController.generateFlightCard = function (flight) {
     var cardContainer = $('<div class="card border-primary animated fadeIn mb-2"></div>');
 
     var cardBody = $('<div class="card-body"></div>');
@@ -83,12 +82,16 @@ FlightController.generateFlightCard = function(flight) {
     var cardText = $('<p class="card-text"></p>');
     var flightSpecifics = $('<ul class="list-unstyled"></ul>');
     var specifics = {
-        "Distance": flight.distance.toFixed(2) + ' km'
+        "Distance": flight.distance.toFixed(2) + ' km',
+        "Fuel needed": flight.fuelNeeded.toFixed(2) + ' L'
     };
-    _.each(specifics, function(value, key) {
+    _.each(specifics, function (value, key) {
         var element = $('<li> ' + key + ': ' + value + ' </li>');
         flightSpecifics.append(element);
     });
     cardContainer.append(cardBody.append(cardTitle).append(cardText.append(flightSpecifics)));
     return $('<div class="col"></div>').append(cardContainer);
+};
+FlightController.generateTitle = function (fromAirport, toAirport) {
+    return fromAirport.name + ' <i class="fa fa-plane"></i> ' + toAirport.name;
 };
